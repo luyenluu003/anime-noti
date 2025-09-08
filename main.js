@@ -68,9 +68,10 @@ function createWindow() {
         const isNotification = target.closest('.notification-item');
         const isCharacterInfo = target.closest('.character-info');
         const isOutfitManager = target.closest('.outfit-manager');
+        const isAudioControls = target.closest('.audio-controls');
         
         // Nếu click vào khoảng trống và chưa bật click-through
-        if (!isCharacter && !isNotification && !isCharacterInfo && !isOutfitManager && !clickThroughEnabled) {
+        if (!isCharacter && !isNotification && !isCharacterInfo && !isOutfitManager && !isAudioControls && !clickThroughEnabled) {
           // Bật click-through tạm thời
           clickThroughEnabled = true;
           window.electronAPI?.enableClickThrough();
@@ -90,8 +91,9 @@ function createWindow() {
         const isNotification = target.closest('.notification-item');
         const isCharacterInfo = target.closest('.character-info');
         const isOutfitManager = target.closest('.outfit-manager');
+        const isAudioControls = target.closest('.audio-controls');
         
-        if (isCharacter || isNotification || isCharacterInfo || isOutfitManager) {
+        if (isCharacter || isNotification || isCharacterInfo || isOutfitManager || isAudioControls) {
           clickThroughEnabled = false;
           window.electronAPI?.disableClickThrough();
         }

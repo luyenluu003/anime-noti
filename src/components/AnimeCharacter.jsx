@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const AnimeCharacter = ({ currentOutfit = 'Casual', hasNotification = false }) => {
+const AnimeCharacter = ({ 
+  currentOutfit = 'Casual', 
+  hasNotification = false, 
+  onCharacterClick,
+  onIdleAnimation 
+}) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [currentSprite, setCurrentSprite] = useState('smile');
   const [isExcited, setIsExcited] = useState(false);
@@ -115,6 +120,7 @@ const AnimeCharacter = ({ currentOutfit = 'Casual', hasNotification = false }) =
     
     console.log('Character clicked - setting excited state');
     setIsExcited(true);
+    
     // Chọn ngẫu nhiên một biểu cảm đỏ mặt
     const blushExpressions = ['smileBlush', 'openBlush', 'closedSmileBlush'];
     const randomBlush = blushExpressions[Math.floor(Math.random() * blushExpressions.length)];
@@ -157,6 +163,17 @@ const AnimeCharacter = ({ currentOutfit = 'Casual', hasNotification = false }) =
   // Xử lý click để thay đổi biểu cảm
   const handleCharacterClick = (e) => {
     e.preventDefault();
+    
+    console.log('Character clicked - triggering audio callback');
+    
+    // Trigger audio callback trước
+    if (onCharacterClick) {
+      console.log('Calling onCharacterClick callback');
+      onCharacterClick();
+    } else {
+      console.log('onCharacterClick callback not provided');
+    }
+    
     handleClick();
   };
 
@@ -193,6 +210,11 @@ const AnimeCharacter = ({ currentOutfit = 'Casual', hasNotification = false }) =
         if (!isMoving && !isExcited) {
           // Thỉnh thoảng thay đổi biểu cảm
           if (Math.random() < 0.4) {
+            // Trigger audio cho idle animation
+            if (onIdleAnimation) {
+              onIdleAnimation();
+            }
+            
             // Chọn ngẫu nhiên từ nhiều biểu cảm khác nhau
             const idleExpressions = [
               'smile', 'open', 'closed', 'closedOpen', 

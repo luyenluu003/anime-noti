@@ -69,17 +69,17 @@ const NotificationSystem = ({ onNotificationShow }) => {
     }, 4000);
   };
 
-  // Thiết lập interval để hiển thị thông báo mỗi 15 giây
+  // Thiết lập interval để hiển thị thông báo mỗi 5 phút
   useEffect(() => {
     // Hiển thị thông báo đầu tiên sau 3 giây
     const initialTimeout = setTimeout(() => {
       showRandomNotification();
     }, 3000);
 
-    // Sau đó hiển thị mỗi 15 giây
+    // Sau đó hiển thị mỗi 5 phút (300 giây)
     const interval = setInterval(() => {
       showRandomNotification();
-    }, 15000);
+    }, 300000);
 
     return () => {
       clearTimeout(initialTimeout);
