@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const NotificationSystem = () => {
+const NotificationSystem = ({ onNotificationShow }) => {
   const [notifications, setNotifications] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -50,12 +50,21 @@ const NotificationSystem = () => {
     console.log('Showing notification:', newNotification); // Debug log
     setNotifications(prev => [...prev, newNotification]);
     setIsVisible(true);
+    
+    // Thông báo cho AnimeCharacter về việc có thông báo
+    if (onNotificationShow) {
+      onNotificationShow(true);
+    }
 
     // Tự động ẩn sau 4 giây
     setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => {
         setNotifications(prev => prev.filter(notif => notif.id !== newNotification.id));
+        // Thông báo cho AnimeCharacter về việc hết thông báo
+        if (onNotificationShow) {
+          onNotificationShow(false);
+        }
       }, 500); // Đợi animation hoàn thành
     }, 4000);
   };
