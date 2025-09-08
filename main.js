@@ -9,15 +9,18 @@ function createWindow() {
   
   // Tạo cửa sổ trong suốt ở góc dưới bên phải
   mainWindow = new BrowserWindow({
-    width: 300,
-    height: 600,
-    x: width - 300, // Góc dưới bên phải
-    y: height - 600, // Đưa cửa sổ lên để có chỗ cho notification
+    width: 250,
+    height: 500,
+    x: width - 250, // Góc dưới bên phải
+    y: height - 500, // Thu nhỏ cửa sổ để biểu tượng xuống thấp hơn
     transparent: true,
     frame: false,
     alwaysOnTop: true,
     skipTaskbar: true,
     resizable: false,
+    titleBarStyle: 'hidden',
+    icon: null,
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -34,6 +37,11 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
   }
+
+  // Hiển thị cửa sổ sau khi load xong để tránh biểu tượng mặc định
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   // Enable file access for static assets
   mainWindow.webContents.session.protocol.registerFileProtocol('file', (request, callback) => {

@@ -82,9 +82,14 @@ body {
 
 .notification-item {
   position: absolute !important;
-  top: 200px !important;
-  left: 100px !important;
-  max-width: 200px !important;
+  top: -120px !important;
+  left: 80px !important;
+  max-width: 180px !important;
   pointer-events: auto !important;
   z-index: 10000 !important;
+}
+
+/* Ẩn biểu tượng Electron */
+.titlebar {
+  display: none !important;
 }
