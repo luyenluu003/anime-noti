@@ -13,5 +13,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   
   disableClickThrough: () => {
     ipcRenderer.send('disable-click-through');
+  },
+  
+  // API đóng ứng dụng
+  closeApp: () => {
+    ipcRenderer.send('close-app');
   }
 });

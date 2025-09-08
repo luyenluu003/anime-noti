@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const AnimeCharacter = () => {
+const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [currentSprite, setCurrentSprite] = useState('smile');
   const [isExcited, setIsExcited] = useState(false);
@@ -11,22 +11,37 @@ const AnimeCharacter = () => {
   const excitedTimeoutRef = useRef(null);
 
   // Sprite configurations - Nora Cat expressions from Noraneko Games
-  const getSpritePath = (spriteName) => {
+  const getSpritePath = (spriteName, outfit = currentOutfit) => {
     if (window.location.origin === 'file://') {
       // For Electron production mode
-      return `./assets/anime/Casual/${spriteName}`;
+      return `./assets/anime/${outfit}/${spriteName}`;
     } else {
       // For development mode
-      return `/assets/anime/Casual/${spriteName}`;
+      return `/assets/anime/${outfit}/${spriteName}`;
     }
   };
 
+  // Tạo sprite names dựa trên outfit hiện tại
+  const getSpriteNames = (outfit) => {
+    const outfitPrefix = outfit === 'Casual' ? 'Casual' : 
+                        outfit === 'Summer Uniform' ? 'SummerUni' : 'WinterUni';
+    
+    return {
+      smile: `Nora_Cat_${outfitPrefix}_Smile.png`,
+      open: `Nora_Cat_${outfitPrefix}_Open.png`,
+      blush: `Nora_Cat_${outfitPrefix}_Smile_Blush.png`,
+      frown: `Nora_Cat_${outfitPrefix}_Frown.png`,
+      closed: `Nora_Cat_${outfitPrefix}_Closed_Smile.png`
+    };
+  };
+
+  const spriteNames = getSpriteNames(currentOutfit);
   const sprites = {
-    smile: getSpritePath('Nora_Cat_Casual_Smile.png'),        // Cười
-    open: getSpritePath('Nora_Cat_Casual_Open.png'),          // Mắt mở
-    blush: getSpritePath('Nora_Cat_Casual_Smile_Blush.png'),  // Cười + đỏ mặt
-    frown: getSpritePath('Nora_Cat_Casual_Frown.png'),        // Cau mày
-    closed: getSpritePath('Nora_Cat_Casual_Closed_Smile.png')   // Mắt nhắm + cười
+    smile: getSpritePath(spriteNames.smile),
+    open: getSpritePath(spriteNames.open),
+    blush: getSpritePath(spriteNames.blush),
+    frown: getSpritePath(spriteNames.frown),
+    closed: getSpritePath(spriteNames.closed)
   };
 
   // Vị trí cố định ở dưới cửa sổ

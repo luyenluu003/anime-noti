@@ -67,9 +67,10 @@ function createWindow() {
         const isCharacter = target.closest('.sprite-transition');
         const isNotification = target.closest('.notification-item');
         const isCharacterInfo = target.closest('.character-info');
+        const isOutfitManager = target.closest('.outfit-manager');
         
         // Nếu click vào khoảng trống và chưa bật click-through
-        if (!isCharacter && !isNotification && !isCharacterInfo && !clickThroughEnabled) {
+        if (!isCharacter && !isNotification && !isCharacterInfo && !isOutfitManager && !clickThroughEnabled) {
           // Bật click-through tạm thời
           clickThroughEnabled = true;
           window.electronAPI?.enableClickThrough();
@@ -88,8 +89,9 @@ function createWindow() {
         const isCharacter = target.closest('.sprite-transition');
         const isNotification = target.closest('.notification-item');
         const isCharacterInfo = target.closest('.character-info');
+        const isOutfitManager = target.closest('.outfit-manager');
         
-        if (isCharacter || isNotification || isCharacterInfo) {
+        if (isCharacter || isNotification || isCharacterInfo || isOutfitManager) {
           clickThroughEnabled = false;
           window.electronAPI?.disableClickThrough();
         }
@@ -125,6 +127,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   
   disableClickThrough: () => {
     ipcRenderer.send('disable-click-through');
+  },
+  
+  // API đóng ứng dụng
+  closeApp: () => {
+    ipcRenderer.send('close-app');
   }
 });
 `;
@@ -143,6 +150,12 @@ ipcMain.on('enable-click-through', () => {
 ipcMain.on('disable-click-through', () => {
   if (mainWindow) {
     mainWindow.setIgnoreMouseEvents(false);
+  }
+});
+
+ipcMain.on('close-app', () => {
+  if (mainWindow) {
+    mainWindow.close();
   }
 });
 
