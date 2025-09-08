@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2024 AI Anime Desktop Pet
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Sprite License Notice
+
+The sprite files included in this project are provided as examples and placeholders.
+When using this project, please replace them with your own sprites or sprites
+with appropriate licenses.
+
+### Default Sprites
+The SVG files in `assets/shimeji/` are created specifically for this project
+and are released under the same MIT license.
+
+### Third-party Sprites
+If you use third-party sprites, please ensure you comply with their respective
+licenses. Common licenses include:
+- CC0 (Public Domain)
+- CC BY (Attribution Required)
+- CC BY-SA (Attribution + ShareAlike)
+- MIT License
+
+### Attribution
+If you use sprites that require attribution, please include the attribution
+in your project documentation or about section.
