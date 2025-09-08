@@ -47,6 +47,7 @@ const NotificationSystem = () => {
       timestamp: new Date()
     };
 
+    console.log('Showing notification:', newNotification); // Debug log
     setNotifications(prev => [...prev, newNotification]);
     setIsVisible(true);
 
@@ -76,7 +77,7 @@ const NotificationSystem = () => {
       clearInterval(interval);
     };
   }, []);
-
+  
   return (
     <div className="notification-container">
       {notifications.map((notification) => (
