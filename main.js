@@ -54,6 +54,48 @@ function createWindow() {
   
   // Cho phép click-through khi không có nội dung
   mainWindow.setIgnoreMouseEvents(false);
+  
+  // Thiết lập click-through cho khoảng trống
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.executeJavaScript(`
+      let clickThroughEnabled = false;
+      
+      // Thêm event listener để xử lý click-through
+      document.addEventListener('click', (e) => {
+        // Kiểm tra nếu click vào khoảng trống (không phải nhân vật hoặc thông báo)
+        const target = e.target;
+        const isCharacter = target.closest('.sprite-transition');
+        const isNotification = target.closest('.notification-item');
+        const isCharacterInfo = target.closest('.character-info');
+        
+        // Nếu click vào khoảng trống và chưa bật click-through
+        if (!isCharacter && !isNotification && !isCharacterInfo && !clickThroughEnabled) {
+          // Bật click-through tạm thời
+          clickThroughEnabled = true;
+          window.electronAPI?.enableClickThrough();
+          
+          // Tự động tắt sau 100ms để cho phép click tiếp theo
+          setTimeout(() => {
+            clickThroughEnabled = false;
+            window.electronAPI?.disableClickThrough();
+          }, 100);
+        }
+      });
+      
+      // Đảm bảo click-through bị tắt khi hover vào các element có thể tương tác
+      document.addEventListener('mouseenter', (e) => {
+        const target = e.target;
+        const isCharacter = target.closest('.sprite-transition');
+        const isNotification = target.closest('.notification-item');
+        const isCharacterInfo = target.closest('.character-info');
+        
+        if (isCharacter || isNotification || isCharacterInfo) {
+          clickThroughEnabled = false;
+          window.electronAPI?.disableClickThrough();
+        }
+      });
+    `);
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -74,11 +116,35 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   // Có thể thêm các API cần thiết ở đây
   platform: process.platform,
-  versions: process.versions
+  versions: process.versions,
+  
+  // API cho click-through
+  enableClickThrough: () => {
+    ipcRenderer.send('enable-click-through');
+  },
+  
+  disableClickThrough: () => {
+    ipcRenderer.send('disable-click-through');
+  }
 });
 `;
 
 fs.writeFileSync('preload.js', preloadContent);
+
+// IPC handlers cho click-through
+const { ipcMain } = require('electron');
+
+ipcMain.on('enable-click-through', () => {
+  if (mainWindow) {
+    mainWindow.setIgnoreMouseEvents(true, { forward: true });
+  }
+});
+
+ipcMain.on('disable-click-through', () => {
+  if (mainWindow) {
+    mainWindow.setIgnoreMouseEvents(false);
+  }
+});
 
 app.whenReady().then(createWindow);
 
