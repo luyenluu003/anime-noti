@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
+const AnimeCharacter = ({ currentOutfit = 'Casual', hasNotification = false }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [currentSprite, setCurrentSprite] = useState('smile');
   const [isExcited, setIsExcited] = useState(false);
@@ -9,6 +9,7 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
   const moveIntervalRef = useRef(null);
   const animationIntervalRef = useRef(null);
   const excitedTimeoutRef = useRef(null);
+  const notificationTimeoutRef = useRef(null);
 
   // Sprite configurations - Nora Cat expressions from Noraneko Games
   const getSpritePath = (spriteName, outfit = currentOutfit) => {
@@ -27,21 +28,45 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
                         outfit === 'Summer Uniform' ? 'SummerUni' : 'WinterUni';
     
     return {
+      // Biểu cảm cơ bản
       smile: `Nora_Cat_${outfitPrefix}_Smile.png`,
       open: `Nora_Cat_${outfitPrefix}_Open.png`,
-      blush: `Nora_Cat_${outfitPrefix}_Smile_Blush.png`,
       frown: `Nora_Cat_${outfitPrefix}_Frown.png`,
-      closed: `Nora_Cat_${outfitPrefix}_Closed_Smile.png`
+      closed: `Nora_Cat_${outfitPrefix}_Closed_Smile.png`,
+      
+      // Biểu cảm với đỏ mặt
+      smileBlush: `Nora_Cat_${outfitPrefix}_Smile_Blush.png`,
+      openBlush: `Nora_Cat_${outfitPrefix}_Open_Blush.png`,
+      frownBlush: `Nora_Cat_${outfitPrefix}_Frown_Blush.png`,
+      closedSmileBlush: `Nora_Cat_${outfitPrefix}_Closed_Smile_Blush.png`,
+      
+      // Biểu cảm mắt nhắm
+      closedFrown: `Nora_Cat_${outfitPrefix}_Closed_Frown.png`,
+      closedOpen: `Nora_Cat_${outfitPrefix}_Closed_Open.png`,
+      closedFrownBlush: `Nora_Cat_${outfitPrefix}_Closed_Frown_Blush.png`,
+      closedOpenBlush: `Nora_Cat_${outfitPrefix}_Closed_Open_Blush.png`
     };
   };
 
   const spriteNames = getSpriteNames(currentOutfit);
   const sprites = {
+    // Biểu cảm cơ bản
     smile: getSpritePath(spriteNames.smile),
     open: getSpritePath(spriteNames.open),
-    blush: getSpritePath(spriteNames.blush),
     frown: getSpritePath(spriteNames.frown),
-    closed: getSpritePath(spriteNames.closed)
+    closed: getSpritePath(spriteNames.closed),
+    
+    // Biểu cảm với đỏ mặt
+    smileBlush: getSpritePath(spriteNames.smileBlush),
+    openBlush: getSpritePath(spriteNames.openBlush),
+    frownBlush: getSpritePath(spriteNames.frownBlush),
+    closedSmileBlush: getSpritePath(spriteNames.closedSmileBlush),
+    
+    // Biểu cảm mắt nhắm
+    closedFrown: getSpritePath(spriteNames.closedFrown),
+    closedOpen: getSpritePath(spriteNames.closedOpen),
+    closedFrownBlush: getSpritePath(spriteNames.closedFrownBlush),
+    closedOpenBlush: getSpritePath(spriteNames.closedOpenBlush)
   };
 
   // Vị trí cố định ở dưới cửa sổ
@@ -88,14 +113,46 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
   const handleClick = () => {
     if (isExcited) return;
     
+    console.log('Character clicked - setting excited state');
     setIsExcited(true);
-    setCurrentSprite('blush'); // Đỏ mặt khi được click
+    // Chọn ngẫu nhiên một biểu cảm đỏ mặt
+    const blushExpressions = ['smileBlush', 'openBlush', 'closedSmileBlush'];
+    const randomBlush = blushExpressions[Math.floor(Math.random() * blushExpressions.length)];
+    console.log('Setting sprite to:', randomBlush);
+    setCurrentSprite(randomBlush);
     
     excitedTimeoutRef.current = setTimeout(() => {
+      console.log('Excitement timeout - returning to normal');
       setIsExcited(false);
       setCurrentSprite('smile');
-    }, 1500);
+    }, 5000); // Tăng lên 5 giây
+    
+    console.log('Set timeout for 5 seconds');
   };
+
+  // Xử lý animation khi có thông báo
+  useEffect(() => {
+    console.log('Notification effect triggered:', { hasNotification, isExcited });
+    if (hasNotification && !isExcited) {
+      // Khi có thông báo, chọn ngẫu nhiên biểu cảm vui vẻ
+      const happyExpressions = ['open', 'openBlush', 'closedOpen', 'closedOpenBlush', 'closed', 'closedSmileBlush'];
+      const randomHappy = happyExpressions[Math.floor(Math.random() * happyExpressions.length)];
+      console.log('Notification - setting sprite to:', randomHappy);
+      setCurrentSprite(randomHappy);
+      
+      // Giữ biểu cảm này trong 4 giây
+      notificationTimeoutRef.current = setTimeout(() => {
+        console.log('Notification timeout - returning to normal');
+        setCurrentSprite('smile');
+      }, 4000);
+    }
+
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, [hasNotification, isExcited]);
 
   // Xử lý click để thay đổi biểu cảm
   const handleCharacterClick = (e) => {
@@ -114,11 +171,20 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
       if (animationIntervalRef.current) {
         clearInterval(animationIntervalRef.current);
       }
+    };
+  }, [position]);
+
+  // Cleanup timeouts khi component unmount
+  useEffect(() => {
+    return () => {
       if (excitedTimeoutRef.current) {
         clearTimeout(excitedTimeoutRef.current);
       }
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
     };
-  }, [position, isExcited]);
+  }, []);
 
   // Animation idle khi không di chuyển
   useEffect(() => {
@@ -127,10 +193,17 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
         if (!isMoving && !isExcited) {
           // Thỉnh thoảng thay đổi biểu cảm
           if (Math.random() < 0.4) {
-            const expressions = ['smile', 'open', 'closed'];
-            const randomExpression = expressions[Math.floor(Math.random() * expressions.length)];
+            // Chọn ngẫu nhiên từ nhiều biểu cảm khác nhau
+            const idleExpressions = [
+              'smile', 'open', 'closed', 'closedOpen', 
+              'frown', 'closedFrown'
+            ];
+            const randomExpression = idleExpressions[Math.floor(Math.random() * idleExpressions.length)];
             setCurrentSprite(randomExpression);
-            setTimeout(() => setCurrentSprite('smile'), 2000);
+            
+            // Thời gian hiển thị biểu cảm ngẫu nhiên (1-3 giây)
+            const displayTime = 1000 + Math.random() * 2000;
+            setTimeout(() => setCurrentSprite('smile'), displayTime);
           }
         }
       }, 3000 + Math.random() * 4000);
@@ -142,6 +215,8 @@ const AnimeCharacter = ({ currentOutfit = 'Casual' }) => {
       }
     };
   }, [isMoving, isExcited]);
+
+  console.log('Rendering character with sprite:', currentSprite, 'isExcited:', isExcited, 'hasNotification:', hasNotification);
 
   return (
     <div

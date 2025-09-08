@@ -6,6 +6,7 @@ import OutfitManager from './components/OutfitManager';
 
 function App() {
   const [currentOutfit, setCurrentOutfit] = useState('Casual');
+  const [hasNotification, setHasNotification] = useState(false);
 
   const handleOutfitChange = (outfitId) => {
     setCurrentOutfit(outfitId);
@@ -21,11 +22,18 @@ function App() {
     }
   };
 
+  const handleNotificationShow = (isShowing) => {
+    setHasNotification(isShowing);
+  };
+
   return (
     <div className="overflow-hidden relative w-full h-full bg-transparent">
       <CharacterInfo />
-      <AnimeCharacter currentOutfit={currentOutfit} />
-      <NotificationSystem />
+      <AnimeCharacter 
+        currentOutfit={currentOutfit} 
+        hasNotification={hasNotification}
+      />
+      <NotificationSystem onNotificationShow={handleNotificationShow} />
       <OutfitManager 
         onOutfitChange={handleOutfitChange}
         onCloseApp={handleCloseApp}
