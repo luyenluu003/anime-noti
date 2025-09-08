@@ -1,4 +1,10 @@
-# AI Anime Desktop Pet
+# 🎭 AI Anime Desktop Pet
+
+<div align="center">
+  <img src="assets/anime/Casual/Nora_Cat_Casual_Smile.png" alt="Nora Cat - AI Anime Desktop Pet" width="128" height="128">
+  <br>
+  <em>Nora Cat - Nhân vật anime desktop pet dễ thương</em>
+</div>
 
 Ứng dụng Electron hiển thị nhân vật anime girl 2D ở góc dưới bên phải màn hình với các tính năng tương tác và animation.
 
@@ -8,11 +14,15 @@
 - 🚶‍♀️ Di chuyển ngẫu nhiên trong khu vực 200x200px
 - 🎬 Thay đổi biểu cảm tự nhiên (smile, open, blush, frown, closed)
 - 😳 Đỏ mặt khi được click với hiệu ứng pulse
-- 💬 Thông báo nhắc nhở ngẫu nhiên mỗi 30 giây
+- 💬 Thông báo nhắc nhở ngẫu nhiên mỗi 5 phút
+- 🎵 Hệ thống âm thanh anime với voice thật
+- 👗 Thay đổi trang phục (Casual, Summer Uniform, Winter Uniform)
 - 🪟 Cửa sổ trong suốt, không viền, luôn ở trên cùng
 - 🎨 Giao diện React với Tailwind CSS
 - ℹ️ Panel thông tin nhân vật với credit đầy đủ
-- 🎮 Tương tác: Click để làm nhân vật đỏ mặt
+- 🎮 Tương tác: Click để làm nhân vật đỏ mặt và phát âm thanh
+- 🔊 Điều khiển âm thanh với nút mute/unmute
+- 🎯 Click-through cho vùng trống (có thể click xuyên qua app)
 
 ## 🛠️ Công nghệ sử dụng
 
@@ -29,17 +39,26 @@ ai-anime/
 ├── src/
 │   ├── components/
 │   │   ├── AnimeCharacter.jsx    # Component nhân vật chính
-│   │   └── NotificationSystem.jsx # Hệ thống thông báo
+│   │   ├── NotificationSystem.jsx # Hệ thống thông báo
+│   │   ├── CharacterInfo.jsx     # Panel thông tin nhân vật
+│   │   ├── OutfitManager.jsx     # Quản lý trang phục
+│   │   └── AudioSystem.jsx       # Hệ thống âm thanh
 │   ├── App.jsx                   # App component chính
 │   ├── main.jsx                  # Entry point React
 │   └── index.css                 # Global styles + Tailwind
 ├── assets/
-│   └── anime/                   # Thư mục chứa sprite gốc
-│       ├── Casual/              # Trang phục thường ngày
-│       ├── Summer Uniform/      # Đồng phục mùa hè
-│       ├── Winter Uniform/      # Đồng phục mùa đông
-│       └── Rules.txt            # License của Noraneko Games
+│   ├── anime/                   # Thư mục chứa sprite gốc
+│   │   ├── Casual/              # Trang phục thường ngày
+│   │   ├── Summer Uniform/      # Đồng phục mùa hè
+│   │   ├── Winter Uniform/      # Đồng phục mùa đông
+│   │   └── Rules.txt            # License của Noraneko Games
+│   └── voice/                   # Thư mục chứa file âm thanh
+│       ├── click-*.mp3          # Âm thanh click
+│       ├── notification-*.mp3   # Âm thanh thông báo
+│       ├── idle-*.mp3           # Âm thanh idle
+│       └── ...                  # Các âm thanh khác
 ├── main.js                       # Electron main process
+├── preload.js                    # Preload script cho Electron
 ├── package.json                  # Dependencies & scripts
 ├── vite.config.js               # Vite configuration
 ├── tailwind.config.js            # Tailwind configuration
@@ -84,8 +103,65 @@ npm run dev
 #### Production mode:
 ```bash
 npm run build
-npm start
+npm run start
 ```
+
+## 🎮 Hướng dẫn sử dụng
+
+### Các tính năng chính:
+
+1. **Tương tác với nhân vật**:
+   - Click vào nhân vật để làm cô ấy đỏ mặt
+   - Nhân vật sẽ phát âm thanh anime khi được click
+   - Biểu cảm sẽ thay đổi tự động theo thời gian
+
+2. **Thay đổi trang phục**:
+   - Click vào nút 👗 ở góc trên bên phải
+   - Chọn trang phục: Casual, Summer Uniform, Winter Uniform
+   - Nhân vật sẽ thay đổi trang phục ngay lập tức
+
+3. **Điều khiển âm thanh**:
+   - Click vào nút 🔊 ở góc dưới bên phải để bật/tắt âm thanh
+   - Âm thanh sẽ phát khi:
+     - Click vào nhân vật
+     - Có thông báo mới
+     - Thay đổi trang phục
+     - Animation idle
+
+4. **Thông báo nhắc nhở**:
+   - Xuất hiện mỗi 5 phút một lần
+   - Chứa lời nhắc nhở nghỉ ngơi và chăm sóc sức khỏe
+   - Có thể đóng bằng nút ×
+
+5. **Click-through**:
+   - Click vào vùng trống để có thể tương tác với các ứng dụng bên dưới
+   - Các nút UI vẫn có thể click bình thường
+
+## 🎵 Nguồn âm thanh anime
+
+### 1. Freesound.org
+- **Link**: https://freesound.org/
+- **Tìm kiếm**: "anime voice", "cute sound", "girl voice"
+- **License**: CC0, CC BY
+- **Chất lượng**: Cao, đa dạng
+
+### 2. Zapsplat
+- **Link**: https://www.zapsplat.com/
+- **Tìm kiếm**: "anime sound effects", "cute voice"
+- **Yêu cầu**: Đăng ký miễn phí
+- **License**: Royalty-free
+
+### 3. Pixabay
+- **Link**: https://pixabay.com/sound-effects/
+- **Tìm kiếm**: "anime", "cute", "voice"
+- **License**: Pixabay License (miễn phí)
+- **Chất lượng**: Tốt
+
+### 4. YouTube Audio Library
+- **Link**: https://www.youtube.com/audiolibrary/music
+- **Đặc điểm**: Miễn phí, không cần attribution
+- **Chất lượng**: Cao
+- **Hạn chế**: Cần tài khoản Google
 
 ## 🎨 Nguồn sprite miễn phí
 
@@ -143,10 +219,10 @@ const moveArea = {
 ### Thay đổi thời gian thông báo
 Sửa trong `src/components/NotificationSystem.jsx`:
 ```javascript
-// Thay đổi từ 30000 (30 giây) thành giá trị khác
+// Thay đổi từ 300000 (5 phút) thành giá trị khác
 setInterval(() => {
   showRandomNotification();
-}, 30000);
+}, 300000); // 300000ms = 5 phút
 ```
 
 ### Thêm thông báo mới
@@ -157,6 +233,23 @@ const reminderMessages = [
   "Thông báo mới của bạn! 🌟",
   // Thêm thông báo khác...
 ];
+```
+
+### Thêm âm thanh mới
+Thêm file âm thanh vào `assets/voice/` và cập nhật trong `AudioSystem.jsx`:
+```javascript
+const soundEffects = {
+  click: [
+    'click-1-384917.mp3',
+    'cartoon-jump-6462.mp3',
+    // Thêm file âm thanh click khác...
+  ],
+  notification: [
+    'surprise-scared-girl-gasp-149490.mp3',
+    // Thêm file âm thanh thông báo khác...
+  ],
+  // Các loại âm thanh khác...
+};
 ```
 
 ## 📱 Tương thích

@@ -36,23 +36,28 @@
   },
   "build": {
     "appId": "com.ai-anime.desktop-pet",
-    "productName": "AI Anime Desktop Pet",
+    "productName": "🎭 AI Anime Desktop Pet",
+    "icon": "assets/anime/Casual/Nora_Cat_Casual_Smile.png",
     "directories": {
       "output": "dist-electron"
     },
     "files": [
       "dist/**/*",
       "main.js",
-      "package.json"
+      "package.json",
+      "assets/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/anime/Casual/Nora_Cat_Casual_Smile.png"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "assets/anime/Casual/Nora_Cat_Casual_Smile.png"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "icon": "assets/anime/Casual/Nora_Cat_Casual_Smile.png"
     }
   }
 }
