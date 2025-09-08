@@ -15,6 +15,7 @@ body {
   width: 100vw;
   height: 100vh;
   background: transparent;
+  pointer-events: auto;
 }
 
 /* Animation classes for sprite transitions */
