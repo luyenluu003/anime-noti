@@ -33,8 +33,8 @@ const AnimeCharacter = () => {
   const moveArea = {
     width: 0, // Không di chuyển
     height: 0,
-    startX: 100, // Vị trí cố định
-    startY: 350 // Đưa xuống dưới để thấy được chân và có chỗ cho notification
+    startX: 80, // Vị trí cố định cho cửa sổ nhỏ hơn
+    startY: 250 // Đưa xuống thấp hơn một chút
   };
 
   // Khởi tạo vị trí ban đầu
